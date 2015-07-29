@@ -1,28 +1,28 @@
-<section id="todoapp">
+<section id="userstoryapp">
   <header id="header">
-    <h1>todos</h1>
-    <form id="todo-form" ng-submit="addTodo()">
-      <input id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" autofocus>
+    <h1>userstories</h1>
+    <form id="userstory-form" ng-submit="addUserStory()">
+      <input id="new-userstory" placeholder="What needs to be done?" ng-model="newUserStory" autofocus>
     </form>
   </header>
-  <section id="main" ng-show="todos.length" ng-cloak>
+  <section id="main" ng-show="userstories.length" ng-cloak>
     <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
     <label for="toggle-all">Mark all as complete</label>
-    <ul id="todo-list">
-      <li ng-repeat="(id, todo) in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
+    <ul id="userstory-list">
+      <li ng-repeat="(id, userstory) in userstories | filter:statusFilter track by $index" ng-class="{completed: userstory.completed, editing: userstory == editedUserStory}">
         <div class="view">
-          <input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="todo.$update()">
-          <label ng-dblclick="editTodo(id)">{{todo.title}}</label>
-          <button class="destroy" ng-click="removeTodo(id)"></button>
+          <input class="toggle" type="checkbox" ng-model="userstory.completed" ng-change="userstory.$update()">
+          <label ng-dblclick="editUserStory(id)">{{userstory.title}}</label>
+          <button class="destroy" ng-click="removeUserStory(id)"></button>
         </div>
         <form ng-submit="doneEditing(id)">
-          <input class="edit" ng-model="todo.title" todo-escape="revertEditing(id)" ng-blur="doneEditing(id)" todo-focus="todo == editedTodo">
+          <input class="edit" ng-model="userstory.title" userstory-escape="revertEditing(id)" ng-blur="doneEditing(id)" userstory-focus="userstory == editedUserStory">
         </form>
       </li>
     </ul>
   </section>
-  <footer id="footer" ng-show="todos.length" ng-cloak>
-    <span id="todo-count"><strong>{{remainingCount}}</strong>
+  <footer id="footer" ng-show="userstories.length" ng-cloak>
+    <span id="userstory-count"><strong>{{remainingCount}}</strong>
       <ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
     </span>
     <ul id="filters">
@@ -36,6 +36,6 @@
         <a ng-class="{selected: status == 'completed'}" href="?q=completed">Completed</a>
       </li>
     </ul>
-    <button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="completedCount">Clear completed ({{completedCount}})</button>
+    <button id="clear-completed" ng-click="clearCompletedUserStories()" ng-show="completedCount">Clear completed ({{completedCount}})</button>
   </footer>
 </section>

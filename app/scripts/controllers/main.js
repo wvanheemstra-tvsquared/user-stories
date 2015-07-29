@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('todomvcApp')
-  .controller('MainCtrl', function ($scope, $timeout, Todo, filterFilter, $location) {
-    $scope.todos = [];
-    $scope.newTodo = '';
-    $scope.editedTodo = null;
+angular.module('userstorymvcApp')
+  .controller('MainCtrl', function ($scope, $timeout, UserStory, filterFilter, $location) {
+    $scope.userstories = [];
+    $scope.newUserStory = '';
+    $scope.editedUserStory = null;
     $scope.status = $location.search().q || '';
 
-    $scope.$watch('todos', function () {
-      $scope.remainingCount = filterFilter($scope.todos, { completed: false }).length;
-      $scope.completedCount = $scope.todos.length - $scope.remainingCount;
+    $scope.$watch('userstories', function () {
+      $scope.remainingCount = filterFilter($scope.userstories, { completed: false }).length;
+      $scope.completedCount = $scope.userstories.length - $scope.remainingCount;
       $scope.allChecked = !$scope.remainingCount;
     }, true);
 
@@ -21,79 +21,79 @@ angular.module('todomvcApp')
         { completed: true } : null;
     });
 
-    $scope.addTodo = function () {
-      var todoTitle = $scope.newTodo.trim();
-      if (!todoTitle.length) {
+    $scope.addUserStory = function () {
+      var userstoryTitle = $scope.newUserStory.trim();
+      if (!userstoryTitle.length) {
         return;
       }
 
-      var newTodo = new Todo({
-        title: todoTitle,
+      var newUserStory = new UserStory({
+        title: userstoryTitle,
         completed: false
       });
-      newTodo.$save();
-      $scope.todos.unshift(newTodo);
-      $scope.newTodo = '';
+      newUserStory.$save();
+      $scope.userstories.unshift(newUserStory);
+      $scope.newUserStory = '';
     };
 
-    $scope.editTodo = function (id) {
-      $scope.editedTodo = $scope.todos[id];
-      $scope.originalTodo = angular.extend({}, $scope.editedTodo);
+    $scope.editUserStory = function (id) {
+      $scope.editedUserStory = $scope.userstories[id];
+      $scope.originalUserStory = angular.extend({}, $scope.editedUserStory);
     };
 
     $scope.doneEditing = function (id) {
-      $scope.editedTodo = null;
-      var title = $scope.todos[id].title.trim();
+      $scope.editedUserStory = null;
+      var title = $scope.userstories[id].title.trim();
       if (title) {
-        $scope.todos[id].$update();
+        $scope.userstories[id].$update();
       } else {
-        $scope.removeTodo(id);
+        $scope.removeUserStory(id);
       }
     };
 
     $scope.revertEditing = function (id) {
-      $scope.todos[id] = $scope.originalTodo;
+      $scope.userstories[id] = $scope.originalUserStory;
       $scope.doneEditing(id);
     };
 
-    $scope.removeTodo = function (id) {
-      $scope.todos[id].$remove();
-      $scope.todos.splice(id, 1);
+    $scope.removeUserStory = function (id) {
+      $scope.userstories[id].$remove();
+      $scope.userstories.splice(id, 1);
     };
 
     $scope.toggleCompleted = function (id) {
-      var todo = $scope.todos[id];
-      todo.completed = !todo.completed;
-      todo.$update();
+      var userstory = $scope.userstories[id];
+      userstory.completed = !userstory.completed;
+      userstory.$update();
     };
 
-    $scope.clearCompletedTodos = function () {
-      var remainingTodos = [];
-      angular.forEach($scope.todos, function (todo) {
-        if (todo.completed) {
-          todo.$remove();
+    $scope.clearCompletedUserStories = function () {
+      var remainingUserStories = [];
+      angular.forEach($scope.userstories, function (userstory) {
+        if (userstory.completed) {
+          userstory.$remove();
         } else {
-          remainingTodos.push(todo);
+          remainingUserStories.push(userstory);
         }
       });
-      $scope.todos = remainingTodos;
+      $scope.userstories = remainingUserStories;
     };
 
     $scope.markAll = function (allCompleted) {
-      angular.forEach($scope.todos, function (todo) {
-        todo.completed = !allCompleted;
-        todo.$update();
+      angular.forEach($scope.userstories, function (userstory) {
+        userstory.completed = !allCompleted;
+        userstory.$update();
       });
     };
 
-    // Poll server to regularly update todos
-    (function refreshTodos() {
-      Todo.query(function(response) {
-        // Update todos if a todo is not being edited
-        if($scope.editedTodo === null) {
-          $scope.todos = response;
+    // Poll server to regularly update userstories
+    (function refreshUserStories() {
+      UserStory.query(function(response) {
+        // Update userstories if a userstory is not being edited
+        if($scope.editedUserStory === null) {
+          $scope.userstories = response;
         }
-        $scope.promise = $timeout(refreshTodos, 5000);
+        $scope.promise = $timeout(refreshUserStories, 5000);
       });
     })();
 

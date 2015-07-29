@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('todomvcApp', [
+angular.module('userstorymvcApp', [
   'ngResource',
   'ngRoute'
 ])
